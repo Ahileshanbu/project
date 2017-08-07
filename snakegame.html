@@ -1,0 +1,98 @@
+<!Doctype html>
+<body onload="func()">
+<script>
+	var canvas,ctx,vtx;
+	var speedx=15,speedy=15;
+	var x=0,y=0;
+	var score = 0;
+	var ranx = (Math.floor(Math.random()*375))+15;
+	var rany = (Math.floor(Math.random()*375))+15;
+	var func = function()
+	{
+		canvas = document.getElementById("canid");
+		canvas.width = 400;
+		canvas.height = 400;
+		ctx = canvas.getContext("2d");
+		vtx = canvas.getContext("2d");
+		ctx.arc(50,200,5,0,2*Math.PI);
+		ctx.fillStyle = "blue";
+		ctx.fill();
+		ctx.stroke();
+		setInterval(update,30);
+	}
+	var rand = function()
+	{
+		 ranx = (Math.floor(Math.random()*375))+5;
+		 rany = (Math.floor(Math.random()*375))+5;
+	}
+	var update = function()
+	{	
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+		ctx.beginPath();
+		speedx += x;
+		speedy += y;
+		if(speedx<10||speedx>390||speedy<10||speedy>390)
+		{
+			alert("your score is "+score);
+			speedx = 15;
+			speedy = 15;
+			x=0;
+			y=0;
+			score = 0;
+		}
+		if((speedy-rany)>=-10&&(speedy-rany)<=10&&(speedx-ranx)>=-10&&(speedx-ranx)<=10)
+		{
+			rand();
+			score += 10;
+		}		
+		ctx.arc(speedx,speedy,5,0,2*Math.PI);
+		ctx.fillStyle = "blue";
+		ctx.fill();
+		ctx.stroke();
+		ctx.closePath();
+		ctx.beginPath();
+		ctx.arc(ranx,rany,5,0,2*Math.PI);
+		ctx.fillStyle = "gray";
+		ctx.fill();
+		ctx.stroke();
+		document.getElementById("id1").innerHTML = speedx;
+		document.getElementById("id2").innerHTML = speedy;
+		document.getElementById("id3").innerHTML = ranx;
+		document.getElementById("id4").innerHTML = rany;
+	}
+	var left = function()
+	{
+		x=-1;
+		y=0
+		update();
+	}
+	var right = function()
+	{
+		x=1;
+		y=0
+		update();
+	}
+	var tops = function()
+	{
+		y = -1;
+		x=0;
+		update();
+	}
+	var down = function()
+	{
+		y = 1;
+		x=0;
+		update();
+	}
+</script>
+<canvas id="canid"style="border:10px solid red"></canvas><br/>&nbsp&nbsp&nbsp
+	<button type="button"onclick="tops()">top</button><br/>
+	<button type="button"onclick="left()">Left</button>
+	<button type="button"onclick="right()">Right</button><br/>&nbsp&nbsp&nbsp
+	<button type="button"onclick="down()">Down</button><br/>
+	<div id="id1"></div>
+	<div id="id3"></div><br/>
+	<div id="id2"></div>
+	<div id="id4"></div><br/>
+</body>
+</html>
