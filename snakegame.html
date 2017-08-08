@@ -3,10 +3,14 @@
 <script>
 	var canvas,ctx,vtx;
 	var speedx=15,speedy=15;
-	var x=0,y=0;
+	var x=0,y=0,key;
 	var score = 0,speed=30,max = 0;
 	var ranx = (Math.floor(Math.random()*375))+15;
 	var rany = (Math.floor(Math.random()*375))+15;
+	var inter = function()
+	{
+		setInterval(update,speed);
+	}
 	var func = function()
 	{
 		canvas = document.getElementById("canid");
@@ -18,12 +22,18 @@
 		ctx.fillStyle = "blue";
 		ctx.fill();
 		ctx.stroke();
-		setInterval(update,speed);
+		inter();
+		window.addEventListener('keydown',keys);
 	}
 	var rand = function()
 	{
-		 ranx = (Math.floor(Math.random()*375))+5;
-		 rany = (Math.floor(Math.random()*375))+5;
+		ranx = (Math.floor(Math.random()*375))+5;
+		rany = (Math.floor(Math.random()*375))+5;
+		if(score%50 == 0)
+		{
+			speed -= 2;
+			inter();
+		}
 	}
 	var update = function()
 	{	
@@ -35,6 +45,7 @@
 		{
 			speedx = 15;
 			speedy = 15;
+			speed = 30;
 			x=0;
 			y=0;
 			if(score>max)
@@ -47,17 +58,12 @@
 				alert("Your score is "+score);
 			}
 			score = 0;
-			speed = 30;
-		}
-		if((speedy-rany)>=-10&&(speedy-rany)<=10&&(speedx-ranx)>=-10&&(speedx-ranx)<=10)
-		{
 			rand();
+		}
+		if((speedy-rany)>=-8&&(speedy-rany)<=8&&(speedx-ranx)>=-8&&(speedx-ranx)<=8)
+		{
 			score += 10;
-			if(score%50 == 0)
-			{
-				speed -= 2;
-				setInterval(update,speed);
-			}
+			rand();
 		}
 		ctx.arc(speedx,speedy,5,0,2*Math.PI);
 		ctx.fillStyle = "blue";
@@ -69,56 +75,40 @@
 		ctx.fillStyle = "gray";
 		ctx.fill();
 		ctx.stroke();
-		document.getElementById("id1").innerHTML = speedx;
-		document.getElementById("id2").innerHTML = speedy;
-		document.getElementById("id3").innerHTML = ranx;
-		document.getElementById("id4").innerHTML = rany;
 	}
-	var left = function()
+	function keys(k)
 	{
-		if(x!=1)
+		switch(k.keyCode)
 		{
-			x=-1;
-			y=0
-			update();
+			case 37: if(x!=1)
+				{
+					x=-1;
+					y=0;
+					update();
+				}break;
+			case 39: if(x!=-1)
+				{
+					x=1;
+					y=0;
+					update();
+				}break;
+			case 38: if(y!=1)
+				{
+					y=-1;
+					x=0;
+					update();
+				}break;
+			case 40: if(y!=-1)
+				{
+					y=1;
+					x=0;
+					update();
+				}break;
 		}
-	}
-	var right = function()
-	{
-		if(x!=-1)
-		{
-			x=1;
-			y=0
-			update();
-		}
-	}
-	var tops = function()
-	{
-		if(y!=1)
-		{
-			y = -1;
-			x=0;
-			update();
-		}
-	}
-	var down = function()
-	{
-		if(y!=-1)
-		{
-			y = 1;
-			x=0;
-			update();
-		}
+	
 	}
 </script>
-<canvas id="canid"style="border:10px solid red"></canvas><br/>&nbsp&nbsp&nbsp
-	<button type="button"onclick="tops()">top</button><br/>
-	<button type="button"onclick="left()">Left</button>
-	<button type="button"onclick="right()">Right</button><br/>&nbsp&nbsp&nbsp
-	<button type="button"onclick="down()">Down</button><br/>
-	<div id="id1"></div>
-	<div id="id3"></div><br/>
-	<div id="id2"></div>
-	<div id="id4"></div><br/>
+<canvas id="canid"style="border:10px solid red"></canvas><br/>
+<p><b>&nbspUse Arrow keys to move Left, Right, Top and Bottom.</b></p>
 </body>
 </html>
