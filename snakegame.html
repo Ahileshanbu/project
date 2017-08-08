@@ -43,22 +43,8 @@
 		speedy += y;
 		if(speedx<10||speedx>390||speedy<10||speedy>390)
 		{
-			speedx = 15;
-			speedy = 15;
-			speed = 30;
-			x=0;
-			y=0;
-			if(score>max)
-			{
-				max = score;
-				alert("You are a top scorrer with score of "+max);
-			}
-			else
-			{
-				alert("Your score is "+score);
-			}
-			score = 0;
-			rand();
+			alert("Your score is "+score);
+			location.reload();
 		}
 		if((speedy-rany)>=-8&&(speedy-rany)<=8&&(speedx-ranx)>=-8&&(speedx-ranx)<=8)
 		{
