@@ -1,0 +1,493 @@
+<!Doctype html>
+
+	<center>
+
+		<script>
+			var draw = function()
+			{
+				init();
+				update();
+			}
+			var init = function()
+			{
+				var i,j;
+				var canvas = document.getElementById("canid");
+				var ctx = canvas.getContext("2d");
+				for(i=0;i<=500;i += 50)
+				{
+					ctx.beginPath();
+					ctx.moveTo(i,0);
+					ctx.lineTo(i,500);
+					ctx.strokeStyle = "black";
+					ctx.stroke();
+					ctx.beginPath();
+					ctx.moveTo(0,i);
+					ctx.lineTo(500,i);
+					ctx.stroke();
+				}
+				table(110,260,140,390);
+				table(410,360,440,440);
+				table(460,10,490,240);
+				table(10,110,40,290);
+				ctx.moveTo(115,40);
+				ctx.lineTo(315,240);
+				ctx.stroke();
+				ctx.moveTo(135,10);
+				ctx.lineTo(335,210);
+				ctx.stroke();
+				var xin = 115,yin=40,xfi=135,yfi=10;
+				for(i= xin+25;i<335-20;i=i+25)
+				{
+					xin +=25;
+					yin +=25;
+					xfi +=25;
+					yfi +=25;
+					ctx.moveTo(xin,yin);
+					ctx.lineTo(xfi,yfi);
+					ctx.stroke();
+				}
+				ctx.moveTo(160,460);
+				ctx.lineTo(310,310);
+				ctx.stroke();
+				ctx.moveTo(180,490);
+				ctx.lineTo(330,340);
+				ctx.stroke();
+				var xin = 160,yin=460,xfi=180,yfi=490;
+				for(i= xin+25;i<330-25;i=i+25)
+				{
+					xin +=25;
+					yin -=25;
+					xfi +=25;
+					yfi -=25;
+					ctx.moveTo(xin,yin);
+					ctx.lineTo(xfi,yfi);
+					ctx.stroke();
+				}
+				drawtext();
+				drawsnake(100,100,300,300);
+				drawsnake(250,0,350,350);
+				drawsnake(50,0,100,250);
+				drawsnake(200,250,400,450);
+				drawsnake(400,50,400,300);
+				
+			}
+			var table = function(xin,yin,xfi,yfi)
+			{
+				var i,j;
+				var canvas = document.getElementById("canid");
+				var ctx = canvas.getContext("2d");
+				ctx.beginPath();
+				ctx.strokeStyle = "red";
+				ctx.moveTo(xin,yin);
+				ctx.lineTo(xin,yfi);
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.moveTo(xfi,yin);
+				ctx.strokeStyle = "#red";
+				ctx.lineTo(xfi,yfi);
+				
+				ctx.stroke();
+				for(i = yin+15;i<yfi;i += 50)
+				{
+					ctx.moveTo(xin,i);
+					ctx.strokeStyle = "red";
+					ctx.lineTo(xfi,i);
+					ctx.stroke();
+				}
+				return 0;
+			}
+			var drawtext = function()
+			{
+				var canvas = document.getElementById("canid");
+				var ctx = canvas.getContext("2d");
+				ctx.font = "15px Comic Sans MS";
+				ctx.fillStyle = "black";
+				var i,j,flag = 0,count =110;
+				for(i = 15; i< 500;i +=50)
+				{
+					if(flag == 0)
+					{
+						flag = 1;
+						count -= 10;
+						for(j = 15;j<500;j += 50)
+						{
+							ctx.fillText(count,j,i);
+							count--;
+						}
+						count++;
+					}
+					else
+					{
+						flag = 0;
+						count -= 10;
+						for(j = 15;j<500;j += 50)
+						{
+							ctx.fillText(count,j,i);
+							count++;
+						}
+						count--;
+					}
+				}
+			}
+			var drawsnake = function(xi,yi,xf,yf) 
+			{
+				var canvas = document.getElementById("canid");
+				var ctx = canvas.getContext("2d");
+				var  tx = xf-xi;
+				var ty = yf-yi;
+				ctx.beginPath();
+				ctx.strokeStyle = "#E308C2";
+				ctx.moveTo(xi+20,yi+20);
+				ctx.quadraticCurveTo(xi-30,yi+50,xi+tx/2,yi+ty/2);
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.moveTo(xi+tx/2,yi+ty/2);
+				ctx.quadraticCurveTo(xi+tx/2+100,xi+ty/2+50,xf-20,yf-20);
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.moveTo(xi+20,yi+20);
+				ctx.quadraticCurveTo(xi-30+10,yi+50+10,xi+tx/2,yi+ty/2);
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.moveTo(xi+tx/2,yi+ty/2);
+				ctx.quadraticCurveTo(xi+tx/2+110,xi+ty/2+50+10,xf-20,yf-20);
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.moveTo(xi+20,yi+20);
+				ctx.quadraticCurveTo(xi-30+20,yi+50+20,xi+tx/2,yi+ty/2);
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.moveTo(xi+tx/2,yi+ty/2);
+				ctx.quadraticCurveTo(xi+tx/2+120,xi+ty/2+50+20,xf-20,yf-20);
+				ctx.stroke();
+			}
+			
+			var ypos = 10,xpos = 1,cypos = 10, cxpos = 1;
+			var countx = 0;
+			var county = 0;
+			var flag = 0;
+			
+			var update = function()
+			{
+				var x,y;
+				drawarc();
+				window.addEventListener('keydown',keys);
+			}
+			
+			var drawxarc = function(xp,yp)
+			{
+				var canvas = document.getElementById("canid");
+				var ctx = canvas.getContext("2d");
+				ctx.clearRect(0,0,500,500);
+				ctx.beginPath();
+				ctx.arc(xpos*50-15,ypos*50-15,10,0,2*Math.PI);
+				ctx.fillStyle = "#2bff23";
+				ctx.fill();
+				ctx.stroke();
+				init();
+				drawarc();
+				return 0 ;
+			}
+			
+			var drawyarc = function(xp,yp)
+			{
+				var canvas = document.getElementById("canid");
+				var ctx = canvas.getContext("2d");
+				ctx.clearRect(0,0,500,500);
+				ctx.beginPath();
+				ctx.arc(cxpos*50-38,cypos*50-15,10,0,2*Math.PI);
+				ctx.fillStyle = "blue";
+				ctx.fill();
+				ctx.stroke();
+				init();drawarc();
+				return 0 ;
+			}
+			
+			var drawarc = function()
+			{
+				var canvas = document.getElementById("canid");
+				var ctx = canvas.getContext("2d");
+				ctx.beginPath();
+				ctx.arc(cxpos*50 - 38,cypos*50-15,10,0,2*Math.PI);
+				ctx.fillStyle = "blue";
+				ctx.fill();
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.arc(xpos*50-15,ypos*50-15,10,0,2*Math.PI);
+				ctx.fillStyle = "#2bff23";
+				ctx.fill();
+				ctx.stroke();
+			}
+			
+			var checkx = function()
+			{
+				if(xpos == 4 && ypos == 10)
+				{
+					xpos = 7;
+					ypos = 7;
+					return 1;
+				}
+				else if(xpos == 9 && ypos == 9)
+				{
+					xpos = 9;
+					ypos = 8;
+					return 1;
+				}
+				else if(xpos == 3 && ypos == 8)
+				{
+					xpos = 3;
+					ypos = 6;
+					return 1;
+				}
+				else if(xpos == 1 && ypos == 6)
+				{
+					xpos = 1;
+					ypos = 3;
+					return 1;
+				}
+				else if(xpos == 7 && ypos == 5)
+				{
+					xpos = 3;
+					ypos = 1;
+					return 1;
+				}
+				else if(xpos == 10 && ypos == 5)
+				{
+					xpos = 10;
+					ypos = 1;
+					return 1;
+				}
+				else if(xpos == 2 && ypos == 1)
+				{
+					xpos = 2;
+					ypos = 5;
+					return 1;
+				}
+				else if(xpos == 6 && ypos == 1)
+				{
+					xpos = 7;
+					ypos = 7;
+					return 1;
+				}
+				else if(xpos == 9 && ypos == 2)
+				{
+					xpos = 8;
+					ypos = 6;
+					return 1;
+				}
+				else if(xpos == 3 && ypos == 3)
+				{
+					xpos = 6;
+					ypos = 6;
+					return 1;
+				}
+				else if(xpos == 5 && ypos == 6)
+				{
+					xpos = 8;
+					ypos = 8;
+					return 1;
+				}
+				return 0;
+			}
+			
+			var checky = function()
+			{
+				if(cxpos == 4 && cypos == 10)
+				{
+					cxpos = 7;
+					cypos = 7;
+					return 1;
+				}
+				else if(cxpos == 9 && cypos == 9)
+				{
+					cxpos = 9;
+					cypos = 8;
+					return 1;
+				}
+				else if(cxpos == 3 && cypos == 8)
+				{
+					cxpos = 3;
+					cypos = 6;
+					return 1;
+				}
+				else if(cxpos == 1 && cypos == 6)
+				{
+					cxpos = 1;
+					cypos = 3;
+					return 1;
+				}
+				else if(cxpos == 7 && cypos == 5)
+				{
+					cxpos = 3;
+					cypos = 1;
+					return 1;
+				}
+				else if(cxpos == 10 && cypos == 5)
+				{
+					cxpos = 10;
+					cypos = 1;
+					return 1;
+				}
+				else if(cxpos == 2 && cypos == 1)
+				{
+					cxpos = 2;
+					cypos = 5;
+					return 1;
+				}
+				else if(cxpos == 6 && cypos == 1)
+				{
+					cxpos = 7;
+					cypos = 7;
+					return 1;
+				}
+				else if(cxpos == 9 && cypos == 2)
+				{
+					cxpos = 8;
+					cypos = 6;
+					return 1;
+				}
+				else if(cxpos == 3 && cypos == 3)
+				{
+					cxpos = 6;
+					cypos = 6;
+					return 1;
+				}
+				else if(cxpos == 5 && cypos == 6)
+				{
+					cxpos = 8;
+					cypos = 8;
+					return 1;
+				}
+				return 0;
+			}
+			
+			var keys = function(k)
+			{
+				if(k.keyCode == 53)
+				{
+					var t = (Math.floor(Math.random()*6))+1;
+					document.getElementById("demo2").innerHTML = "your probable number is "+t;
+					if(flag == 0)
+					{
+					while(t!=0)
+					{	
+						flag = 1;
+						if(ypos==1)
+						{
+							if((xpos-t)<1)
+							{
+								break;
+							}
+						}
+						x = xpos;
+						y = ypos;
+						
+						if(ypos%2==0)
+						{
+							xpos++;
+							if(xpos>10)
+							{
+								ypos--;
+								xpos = 10;
+							}
+						}
+						else
+						{
+							xpos--;
+							if(xpos<1)
+							{
+								xpos = 1;
+								ypos--;
+							}
+						}
+						drawxarc(x,y);
+						t--;
+					}
+					x = xpos;
+					y = ypos;
+					var z = checkx()
+					if(z == 1)
+					{
+						drawxarc(x,y);
+					}
+					}
+					document.getElementById("demo1").innerHTML = "Its player2's turn";
+				}
+				else if (k.keyCode == 70)
+				{
+					var t = (Math.floor(Math.random()*6))+1;
+					document.getElementById("demo2").innerHTML = "your probable number is "+t;
+					if(flag == 1)
+					{
+						while(t!=0)
+						{
+							flag = 0;
+							if(cypos==1)
+							{
+								if((cxpos-t)<1)
+								{
+									break;
+								}
+							}
+						x = cxpos;
+						y = cypos;
+						if(cypos%2==0)
+						{
+							cxpos++;
+							if(cxpos>10)
+							{
+								cypos--;
+								cxpos = 10;
+							}
+						}
+						else
+						{
+							cxpos--;
+							if(cxpos<1)
+							{
+								cxpos = 1;
+								cypos--;
+							}
+						}
+						drawyarc(x,y);
+						t--;
+						}
+					}
+					x = cxpos;
+					y = cypos;
+					var z = checky()
+					if(z == 1)
+					{
+						drawyarc(x,y);
+					}
+					document.getElementById("demo1").innerHTML = "Its player1's turn";	
+				}
+				if(xpos == 1 && ypos == 1)
+				{
+					alert("You won the match");
+					location.reload();
+					draw();
+				}
+				if(cxpos == 1 && cypos == 1)
+				{
+					alert("you lost the match");
+					location.reload();
+					draw();
+				}
+				
+			}
+		</script>
+		
+		<body onload = "draw()">
+			
+			<canvas id = "canid" width = "500" height = "500" style = "border : 1px solid black">
+			
+			</canvas>
+			<p><b>Green</b> denotes<b> player1</b> and has to<b> press 5</b>
+			and <b>Blue</b> denotes<b> player2</b> and has to<b> press f</b></p>
+			<h4 id="demo1">Its player1's turn</h4> <h4 id="demo2"></h4>
+		</body>
+	
+	</center>
+
+</html>
